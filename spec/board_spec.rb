@@ -5,7 +5,7 @@ require './lib/connect_four/board'
 describe Board do
   let(:x) { Cell.new('X') }
   let(:y) { Cell.new('O') }
-  let(:empty) { Cell.new('_') }
+  let(:empty) { Cell.new("\u25cb") }
 
   describe '#initialize' do
     it 'when argument is given' do
@@ -65,6 +65,50 @@ describe Board do
     it 'returns true when diagonal_down_check? is true' do
       board = Board.new
       allow(board).to receive_messages(diagonal_up_check?: true)
+      expect(board.winner?).to eq(true)
+    end
+    it 'returns true when a diagonal from top left to bottom right contains the same 4 colors together' do
+      board = Board.new([
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, x, empty, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, empty, x, empty, empty, empty],
+                          [empty, empty, empty, empty, x, empty, empty]
+                        ])
+      expect(board.winner?).to eq(true)
+    end
+    it 'returns true when a diagonal from top left to bottom right contains the same 4 colors together' do
+      board = Board.new([
+                          [empty, empty, empty, x, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, x, empty, empty, empty, empty, empty],
+                          [x, empty, empty, empty, empty, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty]
+                        ])
+      expect(board.winner?).to eq(true)
+    end
+    it 'returns true when a row contains the same 4 colors together' do
+      board = Board.new([
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, x, x, x, x, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty]
+                        ])
+      expect(board.winner?).to eq(true)
+    end
+    it 'returns true when a diagonal from top left to bottom right contains the same 4 colors together' do
+      board = Board.new([
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, empty, empty, empty, empty, empty, empty],
+                          [empty, x, empty, empty, empty, empty, empty],
+                          [empty, x, empty, empty, empty, empty, empty],
+                          [empty, x, empty, empty, empty, empty, empty],
+                          [empty, x, empty, empty, empty, empty, empty]
+                        ])
       expect(board.winner?).to eq(true)
     end
   end
