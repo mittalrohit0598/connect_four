@@ -55,7 +55,7 @@ class Board
     grid[0...grid.length - 2].each_with_index do |arr, i|
       arr.each_index do |j|
         diagonal_array = []
-        3.times do |k|
+        4.times do |k|
           diagonal_array << grid[i + k][j + k]&.value
         end
         return true if diagonal_array.all? { |n| n == diagonal_array[0] } && diagonal_array[i] != "\u25cb"
@@ -68,7 +68,7 @@ class Board
     (2...grid.length).reverse_each do |i|
       grid[i].each_index do |j|
         diagonal_array = []
-        3.times do |k|
+        4.times do |k|
           diagonal_array << grid[i - k][j + k]&.value
         end
         return true if diagonal_array.all? { |n| n == diagonal_array[0] } && diagonal_array[i] != "\u25cb"
