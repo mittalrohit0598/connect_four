@@ -59,7 +59,13 @@ class Board
   end
 
   def vertical_check?
-    horizontal_check?(grid.transpose)
+    grid = self.grid.transpose
+    grid.each_index do |i|
+      grid[i][0, 3].each_index do |j|
+        return true if grid[i][j, 4].map(&:value).all? { |n| n == grid[i][j].value } && grid[i][j].value != "\u25cb"
+      end
+    end
+    false
   end
 
   def diagonal_down_check?
