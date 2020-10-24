@@ -40,10 +40,18 @@ describe Board do
     end
   end
   describe '#set_value' do
-    it 'set the given value on given (x, y) co-ordinate' do
-      board = Board.new([[Cell.new('abc'), '', ''], ['', '', 'X'], ['', '', '']])
-      board.set_value(0, 0, 'xyz')
-      expect(board.get_value(0, 0).value).to eq('xyz')
+    let(:empty) { Cell.new("\u25cb") }
+    it 'set the given value on deepest row in given column' do
+      board = Board.new([
+                          [empty, empty, empty],
+                          [empty, empty, empty],
+                          [empty, empty, empty],
+                          [empty, empty, empty],
+                          [empty, empty, empty],
+                          [empty, empty, empty]
+                        ])
+      board.set_value(2, 'xyz')
+      expect(board.get_value(2, 2).value).to eq('xyz')
     end
   end
   describe '#winner?' do
@@ -110,6 +118,30 @@ describe Board do
                           [empty, x, empty, empty, empty, empty, empty]
                         ])
       expect(board.winner?).to eq(true)
+    end
+  end
+  describe '#full_column?' do
+    it 'returns true if column is full' do
+      board = Board.new([
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty]
+                        ])
+      expect(board.full_column?(2)).to eq(true)
+    end
+    it 'returns false if column is not full' do
+      board = Board.new([
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty],
+                          [empty, empty, x, empty, empty, empty, empty]
+                        ])
+      expect(board.full_column?(3)).to eq(false)
     end
   end
 end

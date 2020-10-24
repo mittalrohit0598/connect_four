@@ -7,8 +7,19 @@ class Board
     @grid = grid
   end
 
-  def set_value(row, column, value)
-    get_value(row, column).value = value
+  def set_value(column, value)
+    (0..5).reverse_each do |row|
+      if get_value(row, column).value == "\u25cb"
+        get_value(row, column).value = value
+        break
+      end
+    end
+  end
+
+  def full_column?(column)
+    return false if get_value(0, column).value == "\u25cb"
+
+    true
   end
 
   def get_value(row, column)
@@ -29,7 +40,7 @@ class Board
   end
 
   def draw?
-    grid.flatten.map(&:value).all? { |n| n != '_' }
+    grid.flatten.map(&:value).all? { |n| n != "\u25cb" }
   end
 
   private
@@ -52,26 +63,26 @@ class Board
   end
 
   def diagonal_down_check?
-    grid[0...grid.length - 2].each_with_index do |arr, i|
+    grid[0...grid.length - 3].each_with_index do |arr, i|
       arr.each_index do |j|
         diagonal_array = []
         4.times do |k|
           diagonal_array << grid[i + k][j + k]&.value
         end
-        return true if diagonal_array.all? { |n| n == diagonal_array[0] } && diagonal_array[i] != "\u25cb"
+        return true if diagonal_array.all? { |n| n == diagonal_array[0] } && diagonal_array[0] != "\u25cb"
       end
     end
     false
   end
 
   def diagonal_up_check?
-    (2...grid.length).reverse_each do |i|
+    (3...grid.length).reverse_each do |i|
       grid[i].each_index do |j|
         diagonal_array = []
         4.times do |k|
           diagonal_array << grid[i - k][j + k]&.value
         end
-        return true if diagonal_array.all? { |n| n == diagonal_array[0] } && diagonal_array[i] != "\u25cb"
+        return true if diagonal_array.all? { |n| n == diagonal_array[0] } && diagonal_array[0] != "\u25cb"
       end
     end
     false
